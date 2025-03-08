@@ -1,0 +1,80 @@
+---
+version: v1alpha
+
+config:
+  storage: /home/weastur/.am
+  links: /home/weastur/.local/bin
+  cache: /home/weastur/.cache/am
+  assets:
+    owner: weastur
+    group: weastur
+    mode: 0744
+
+groups:
+  - name: eksctl
+    versions:
+      - value: "0.205.0"
+        current: true
+    remotes:
+      - type: github
+        owner: weaveworks
+        repo: eksctl
+        tag: "v0.205.0" # TODO: templates
+        assets:
+          - type: archive
+            id: linux-amd64
+            name: eksctl_Linux_amd64.tar.gz # TODO: templates
+    integrity:
+      - type: sha256
+        asset: linux-amd64
+        reference:
+          - version: "0.205.0"
+            value: 52f52276276d421f03790fbdc1b02e783c369f4863fc6dc83cf116f2f89ca5c4
+    targets:
+      - asset: linux-amd64
+        unpack: true
+        strip-components: 0
+        permsissions:
+          - path: eksctl
+            recursive: false
+            owner: weastur
+            group: weastur
+            mode: 0744
+    links:
+      - target: eksctl
+        name: eksctl
+
+  - name: zookeeper
+    versions:
+      - value: "3.9.3"
+        current: true
+      - value: "3.9.2"
+        current: false
+    remotes:
+      - type: http
+        address: https://dlcdn.apache.org/zookeeper/
+        assets:
+          - type: archive
+            id: zk
+            location: zookeeper-3.9.3/apache-zookeeper-3.9.3-bin.tar.gz
+    integrity:
+      - type: sha256
+        asset: zk
+        reference:
+          - version: "3.9.3"
+            value: 52f52276276d421f03790fbdc1b02e783c369f4863fc6dc83cf116f2f89ca5c4
+          - version: "3.9.2"
+            value: 52f52276276d421f03790fbdc1b02e783c369f4863fc6dc83cf116f2f89ca5c4
+    targets:
+      - asset: zk
+        unpack: true
+        strip-components: 0
+        permsissions:
+          - path: bin/*.sh # TODO: regex
+            recursive: false
+            owner: weastur
+            group: weastur
+            mode: 0744
+    links:
+      - target: bin/{name}.sh # TODO: regex
+        name: { name } # ZkCli.sh -> ZkCli
