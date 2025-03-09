@@ -2,47 +2,62 @@
 version: v1alpha
 
 config:
-  storage: /home/weastur/.am
-  links: /home/weastur/.local/bin
-  cache: /home/weastur/.cache/am
+  locations:
+    storage: $HOME/.am
+    binary: $HOME/.local/bin
+    man: $HOME/.local/share/man
+    bash_completion: $HOME/.bash_completion.d
+    zsh_completion: $HOME/.zsh/completions
+    fish_completion: $HOME/.config/fish/completions
+    cache: $HOME/.cache/am
   assets:
-    owner: weastur
-    group: weastur
-    mode: 0744
+    owner: $USER
+    group: $USER
+    mode: 0755
 
 groups:
-  - name: eksctl
+  - name: hurl
     versions:
-      - value: "0.205.0"
+      - value: "6.0.0"
         current: true
     remotes:
       - type: github
-        owner: weaveworks
-        repo: eksctl
-        tag: "v0.205.0" # TODO: templates
+        owner: Orange-OpenSource
+        repo: hurl
+        tag: "{{ .version }}"
         assets:
-          - type: archive
-            id: linux-amd64
-            name: eksctl_Linux_amd64.tar.gz # TODO: templates
+          - type: archive # type: binary
+            id: linux-all
+            name: "hurl-{{ .version }}-x86_64-unknown-linux-gnu.tar.gz"
     integrity:
       - type: sha256
-        asset: linux-amd64
+        asset: linux-all
         reference:
-          - version: "0.205.0"
-            value: 52f52276276d421f03790fbdc1b02e783c369f4863fc6dc83cf116f2f89ca5c4
+          - version: "6.0.0"
+            value: 20bed7a6b76060f6577d1f5dd1aa4c6b9e4462d9700b53c86aa641fe38ea7db1
     targets:
-      - asset: linux-amd64
-        unpack: true
-        strip-components: 0
+      - asset: linux-all
+        strip-components: 1
         permsissions:
-          - path: eksctl
-            recursive: false
-            owner: weastur
-            group: weastur
-            mode: 0744
+          - path: man
+            recursive: true
+            mode: 0644
+          - path: completions
+            mode: 0644
+          - path: bin/*
     links:
-      - target: eksctl
-        name: eksctl
+      - target: '^bin\/(?P<name>hurl\w*)$'
+        regex: true
+        type: binary
+        name: "{{ .name }}"
+      - target: '^man\/(?P<name>man\d)$'
+        regex: true
+        type: man
+        name: "{{ .name }}"
+      - target: '^completions\/(?P<name>\_hurl\w*)$'
+        regex: true
+        type: zsh_completion
+        name: "{{ .name }}"
 
   - name: zookeeper
     versions:
@@ -56,25 +71,49 @@ groups:
         assets:
           - type: archive
             id: zk
-            location: zookeeper-3.9.3/apache-zookeeper-3.9.3-bin.tar.gz
+            location: zookeeper-{{ .version }}/apache-zookeeper-{{ .version }}-bin.tar.gz
     integrity:
-      - type: sha256
+      - type: sha512
         asset: zk
         reference:
           - version: "3.9.3"
-            value: 52f52276276d421f03790fbdc1b02e783c369f4863fc6dc83cf116f2f89ca5c4
+            value: d44d870c1691662efbf1a8baf1859c901b820dc5ff163b36e81beb27b6fbf3cd31b5f1f075697edaaf6d3e7a4cb0cc92f924dcff64b294ef13d535589bdaf143
           - version: "3.9.2"
-            value: 52f52276276d421f03790fbdc1b02e783c369f4863fc6dc83cf116f2f89ca5c4
+            value: 2b5ae02d618a27ca8cd54924855d5344263b7d9dee760181f9d66bafa9230324d2ad31786895f0654c969dc38d4a3d0077f74cc376b58b5fa2fb94beb1ab445f
     targets:
       - asset: zk
-        unpack: true
-        strip-components: 0
         permsissions:
-          - path: bin/*.sh # TODO: regex
-            recursive: false
-            owner: weastur
-            group: weastur
-            mode: 0744
+          - path: bin/*.sh
+            # regex: true
     links:
-      - target: bin/{name}.sh # TODO: regex
-        name: { name } # ZkCli.sh -> ZkCli
+      - target: '^bin\/(?P<name>\w+\.sh)$'
+        regex: true
+        type: binary
+        name: "{{ .name }}"
+
+  - name: terraform
+    versions:
+      - value: "1.11.1"
+        current: true
+    remotes:
+      - type: hashicorp
+        repo: terraform
+        tag: "{{ .version }}"
+        assets:
+          - type: archive
+            id: linux-amd64
+            name: "terraform_{{ .version }}_linux_amd64.zip"
+    integrity:
+      - type: sha256
+        asset: linux-amd64
+        reference:
+          - version: "1.11.1"
+            value: 1af58f77958186227bce9ae4d9b08e004fb0902c7a6bdc813cdbab88739f9316
+    targets:
+      - asset: linux-amd64
+        permsissions:
+          - path: terraform
+    links:
+      - target: terraform
+        type: binary
+        name: terraform
