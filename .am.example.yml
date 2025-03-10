@@ -62,7 +62,7 @@ groups:
       - value: "3.9.3"
         current: true
       - value: "3.9.2"
-        current: false
+        current: true
     remotes:
       - type: http
         address: https://dlcdn.apache.org/zookeeper/
