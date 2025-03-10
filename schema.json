@@ -242,7 +242,8 @@
                     "man",
                     "bash_completion",
                     "zsh_completion",
-                    "fish_completion"
+                    "fish_completion",
+                    "generic"
                   ]
                 },
                 "name": {
