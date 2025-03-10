@@ -206,6 +206,9 @@
                       "path": {
                         "type": "string"
                       },
+                      "regex": {
+                        "type": "boolean"
+                      },
                       "recursive": {
                         "type": "boolean"
                       },
