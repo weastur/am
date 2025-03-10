@@ -1,19 +1,17 @@
 ---
-version: v1alpha
-
 config:
   locations:
     storage: $HOME/.am
-    binary: $HOME/.local/bin
-    man: $HOME/.local/share/man
-    bash_completion: $HOME/.bash_completion.d
-    zsh_completion: $HOME/.zsh/completions
-    fish_completion: $HOME/.config/fish/completions
+    binaries: $HOME/.local/bin
+    mans: $HOME/.local/share/man
+    bash_completions: $HOME/.bash_completion.d
+    zsh_completions: $HOME/.zsh/completions
+    fish_completions: $HOME/.config/fish/completions
     cache: $HOME/.cache/am
   assets:
     owner: $USER
     group: $USER
-    mode: 0755
+    mode: "0755"
 
 groups:
   - name: hurl
@@ -32,7 +30,7 @@ groups:
     integrity:
       - type: sha256
         asset: linux-all
-        reference:
+        references:
           - version: "6.0.0"
             value: 20bed7a6b76060f6577d1f5dd1aa4c6b9e4462d9700b53c86aa641fe38ea7db1
     targets:
@@ -41,9 +39,9 @@ groups:
         permsissions:
           - path: man
             recursive: true
-            mode: 0644
+            mode: "0644"
           - path: completions
-            mode: 0644
+            mode: "0644"
           - path: bin/*
     links:
       - target: '^bin\/(?P<name>hurl\w*)$'
@@ -75,7 +73,7 @@ groups:
     integrity:
       - type: sha512
         asset: zk
-        reference:
+        references:
           - version: "3.9.3"
             value: d44d870c1691662efbf1a8baf1859c901b820dc5ff163b36e81beb27b6fbf3cd31b5f1f075697edaaf6d3e7a4cb0cc92f924dcff64b294ef13d535589bdaf143
           - version: "3.9.2"
@@ -106,7 +104,7 @@ groups:
     integrity:
       - type: sha256
         asset: linux-amd64
-        reference:
+        references:
           - version: "1.11.1"
             value: 1af58f77958186227bce9ae4d9b08e004fb0902c7a6bdc813cdbab88739f9316
     targets:
@@ -115,5 +113,4 @@ groups:
           - path: terraform
     links:
       - target: terraform
-        type: binary
         name: terraform
