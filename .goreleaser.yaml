@@ -1,0 +1,172 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
+---
+version: 2
+
+before:
+  hooks:
+    - make clean
+    - go mod tidy
+    - make build
+    - ./build/scripts/completions.sh
+    - ./build/scripts/manpages.sh
+
+metadata:
+  mod_timestamp: "{{ .CommitTimestamp }}"
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - freebsd
+    goarch:
+      - amd64
+      - arm64
+
+dockers:
+  - image_templates:
+      - "ghcr.io/weastur/am:{{ .Tag }}-amd64"
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--platform=linux/amd64"
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/weastur/am
+      - --label=org.opencontainers.image.source=https://github.com/weastur/am
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=MPL-2.0
+  - image_templates:
+      - "ghcr.io/weastur/am:{{ .Tag }}-arm64"
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--platform=linux/arm64"
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/weastur/am
+      - --label=org.opencontainers.image.source=https://github.com/weastur/am
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=MPL-2.0
+    goarch: arm64
+
+docker_manifests:
+  - name_template: "ghcr.io/weastur/am:{{ .Tag }}"
+    image_templates:
+      - "ghcr.io/weastur/am:{{ .Tag }}-amd64"
+      - "ghcr.io/weastur/am:{{ .Tag }}-arm64"
+
+archives:
+  - formats: ["tar.gz"]
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    builds_info:
+      group: root
+      owner: root
+      mtime: "{{ .CommitDate }}"
+    files:
+      - src: README.md
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+      - src: LICENSE
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+      - src: SECURITY.md
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+      - src: AUTHORS
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+      - src: docs/*
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+      - src: build/completions/*
+        dst: completions
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+      - src: build/manpages/*
+        dst: manpages
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+
+nfpms:
+  - maintainer: Pavel Sapezhka <me@weastur.com>
+    description: >-
+      Asset Manager is a package manager for software distributed as tarballs or binaries.
+      It is designed to be simple and easy to use both on local or remotes.
+    homepage: https://github.com/weastur/am
+    license: MPL-2.0
+    bindir: /usr/bin
+    section: utils
+    mtime: "{{ .CommitDate }}"
+    contents:
+      - src: ./build/completions/am.bash
+        dst: /usr/share/bash-completion/completions/am
+        file_info:
+          mode: 0644
+          mtime: "{{ .CommitDate }}"
+      - src: ./build/completions/am.fish
+        dst: /usr/share/fish/vendor_completions.d/am.fish
+        file_info:
+          mode: 0644
+          mtime: "{{ .CommitDate }}"
+      - src: ./build/completions/am.zsh
+        dst: /usr/share/zsh/vendor-completions/_am
+        file_info:
+          mode: 0644
+          mtime: "{{ .CommitDate }}"
+      - src: ./build/manpages/*.gz
+        dst: /usr/share/man/man1/
+        file_info:
+          mode: 0644
+          mtime: "{{ .CommitDate }}"
+      - src: ./LICENSE
+        dst: /usr/share/doc/am/copyright
+        file_info:
+          mode: 0644
+          mtime: "{{ .CommitDate }}"
+      - src: ./docs/*
+        dst: /usr/share/doc/am/
+        file_info:
+          mode: 0644
+          mtime: "{{ .CommitDate }}"
+    formats:
+      - deb
+      - rpm
+      - apk
+    rpm:
+      summary: Asset Manager
+    deb:
+      lintian_overrides:
+        - statically-linked-binary
+
+changelog:
+  use: github-native
+
+release:
+  draft: true
