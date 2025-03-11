@@ -31,10 +31,10 @@ repos:
     hooks:
       - id: gitlint
         stages: [commit-msg]
-  # - repo: https://github.com/golangci/golangci-lint
-  #   rev: v1.64.6
-  #   hooks:
-  #     - id: golangci-lint-full
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v1.64.6
+    hooks:
+      - id: golangci-lint-full
   - repo: https://github.com/AleksaC/hadolint-py
     rev: v2.12.1b3
     hooks:
