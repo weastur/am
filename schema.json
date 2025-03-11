@@ -93,63 +93,131 @@
           "remotes": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "github",
-                    "hashicorp",
-                    "http"
-                  ]
-                },
-                "owner": {
-                  "type": "string"
-                },
-                "repo": {
-                  "type": "string"
-                },
-                "tag": {
-                  "type": "string"
-                },
-                "address": {
-                  "type": "string"
-                },
-                "assets": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "binary",
-                          "archive"
-                        ]
-                      },
-                      "id": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "location": {
-                        "type": "string"
-                      }
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "github"
                     },
-                    "required": [
-                      "type",
-                      "id"
-                    ],
-                    "additionalProperties": false
-                  }
+                    "owner": {
+                      "type": "string"
+                    },
+                    "repo": {
+                      "type": "string"
+                    },
+                    "tag": {
+                      "type": "string"
+                    },
+                    "assets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "id"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "owner",
+                    "repo",
+                    "tag",
+                    "assets"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "hashicorp"
+                    },
+                    "repo": {
+                      "type": "string"
+                    },
+                    "version": {
+                      "type": "string"
+                    },
+                    "assets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "id"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "repo",
+                    "version",
+                    "assets"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "http"
+                    },
+                    "address": {
+                      "type": "string"
+                    },
+                    "assets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "location": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "location",
+                          "id"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "address",
+                    "assets"
+                  ],
+                  "additionalProperties": false
                 }
-              },
-              "required": [
-                "type",
-                "assets"
-              ],
-              "additionalProperties": false
+              ]
             }
           },
           "integrity": {

@@ -24,8 +24,7 @@ groups:
         repo: hurl
         tag: "{{ .version }}"
         assets:
-          - type: archive # type: binary
-            id: linux-all
+          - id: linux-all
             name: "hurl-{{ .version }}-x86_64-unknown-linux-gnu.tar.gz"
     integrity:
       - type: sha256
@@ -67,8 +66,7 @@ groups:
       - type: http
         address: https://dlcdn.apache.org/zookeeper/
         assets:
-          - type: archive
-            id: zk
+          - id: zk
             location: zookeeper-{{ .version }}/apache-zookeeper-{{ .version }}-bin.tar.gz
     integrity:
       - type: sha512
@@ -96,10 +94,9 @@ groups:
     remotes:
       - type: hashicorp
         repo: terraform
-        tag: "{{ .version }}"
+        version: "{{ .version }}"
         assets:
-          - type: archive
-            id: linux-amd64
+          - id: linux-amd64
             name: "terraform_{{ .version }}_linux_amd64.zip"
     integrity:
       - type: sha256
