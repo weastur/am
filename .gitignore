@@ -23,3 +23,13 @@ go.work.sum
 
 # env file
 .env
+
+/bin/
+/coverage.txt
+dist/
+
+.am.yml
+/man
+/amdoc
+/build/completions
+/build/manpages
