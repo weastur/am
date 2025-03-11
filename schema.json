@@ -11,20 +11,26 @@
             "storage": {
               "type": "string"
             },
-            "binaries": {
-              "type": "string"
-            },
-            "mans": {
-              "type": "string"
-            },
-            "bash_completions": {
-              "type": "string"
-            },
-            "zsh_completions": {
-              "type": "string"
-            },
-            "fish_completions": {
-              "type": "string"
+            "links": {
+              "type": "object",
+              "properties": {
+                "binary": {
+                  "type": "string"
+                },
+                "man": {
+                  "type": "string"
+                },
+                "bash_completion": {
+                  "type": "string"
+                },
+                "zsh_completion": {
+                  "type": "string"
+                },
+                "fish_completion": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
             },
             "cache": {
               "type": "string"

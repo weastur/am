@@ -2,12 +2,13 @@
 config:
   locations:
     storage: $HOME/.am
-    binaries: $HOME/.local/bin
-    mans: $HOME/.local/share/man
-    bash_completions: $HOME/.bash_completion.d
-    zsh_completions: $HOME/.zsh/completions
-    fish_completions: $HOME/.config/fish/completions
     cache: $HOME/.cache/am
+    links:
+      binary: $HOME/.local/bin
+      man: $HOME/.local/share/man
+      bash_completion: $HOME/.bash_completion.d
+      zsh_completion: $HOME/.zsh/completions
+      fish_completion: $HOME/.config/fish/completions
   assets:
     owner: $USER
     group: $USER
