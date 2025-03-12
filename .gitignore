@@ -33,3 +33,4 @@ dist/
 /amdoc
 /build/completions
 /build/manpages
+/config.schema.json
