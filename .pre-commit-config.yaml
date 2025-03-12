@@ -52,4 +52,4 @@ repos:
     hooks:
       - id: detect-secrets
         args: ["--baseline", ".secrets.baseline"]
-        exclude: .am.example.yml
+        exclude: config.yml
