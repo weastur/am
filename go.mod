@@ -1,6 +1,6 @@
 module github.com/weastur/am
 
-go 1.23.7
+go 1.24.1
 
 require github.com/spf13/cobra v1.9.1
 
