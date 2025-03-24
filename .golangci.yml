@@ -1,56 +1,75 @@
----
+version: "2"
 run:
   modules-download-mode: readonly
 linters:
-  enable-all: true
+  default: all
   disable:
+    - dupl
     - exhaustruct
     - gochecknoglobals
     - gochecknoinits
-    - ireturn
-    - testpackage
-    - tenv
-    - gci
     - godot
-    - wrapcheck
-    - reassign
     - godox
-    - dupl
-
-linters-settings:
-  depguard:
-    rules:
-      main:
-        list-mode: strict
-        allow:
-          - $gostd
-          - github.com/weastur
-          - github.com/spf13/cobra
-        deny:
-          - pkg: "math/rand$"
-            desc: use math/rand/v2
-  varnamelen:
-    ignore-decls:
-      - t testing.T
-      - e error
-      - i int
-      - T any
-      - w http.ResponseWriter
-      - r *http.Request
-      - wg sync.WaitGroup
-  forbidigo:
-    forbid:
-      - ^print(ln)?$
-    exclude-godoc-examples: true
-    analyze-types: true
-  paralleltest:
-    ignore-missing: true
-    ignore-missing-subtests: true
-  errcheck:
-    disable-default-exclusions: true
-    exclude-functions:
-      - (*github.com/spf13/cobra.Command).MarkFlagFilename
-  wsl:
-    allow-cuddle-with-calls:
-      - Done
-      - Add
+    - ireturn
+    - reassign
+    - testpackage
+    - wrapcheck
+  settings:
+    depguard:
+      rules:
+        main:
+          list-mode: strict
+          allow:
+            - $gostd
+            - github.com/weastur
+            - github.com/spf13/cobra
+          deny:
+            - pkg: math/rand$
+              desc: use math/rand/v2
+    errcheck:
+      disable-default-exclusions: true
+      exclude-functions:
+        - (*github.com/spf13/cobra.Command).MarkFlagFilename
+    forbidigo:
+      forbid:
+        - pattern: ^print(ln)?$
+      exclude-godoc-examples: true
+      analyze-types: true
+    paralleltest:
+      ignore-missing: true
+      ignore-missing-subtests: true
+    varnamelen:
+      ignore-decls:
+        - t testing.T
+        - e error
+        - i int
+        - T any
+        - w http.ResponseWriter
+        - r *http.Request
+        - wg sync.WaitGroup
+    wsl:
+      allow-cuddle-with-calls:
+        - Done
+        - Add
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gofmt
+    - gofumpt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
