@@ -34,3 +34,5 @@ dist/
 /build/completions
 /build/manpages
 /config.schema.json
+/.task
+/coverage.html
