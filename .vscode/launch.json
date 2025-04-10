@@ -6,7 +6,7 @@
       "type": "go",
       "request": "launch",
       "mode": "exec",
-      "program": "${workspaceFolder}/bin/am",
+      "program": "${workspaceFolder}/am",
       "args": [
         "ensure"
       ],
