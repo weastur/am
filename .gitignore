@@ -36,3 +36,4 @@ dist/
 /config.schema.json
 /.task
 /coverage.html
+/am
