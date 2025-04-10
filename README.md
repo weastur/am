@@ -1,5 +1,7 @@
 # WIP: am
 
+<div align="center">
+
 [![Go Report Card](https://goreportcard.com/badge/github.com/weastur/am)](https://goreportcard.com/report/github.com/weastur/am)
 [![codecov](https://codecov.io/gh/weastur/am/graph/badge.svg?token=QANQ7BIQY9)](https://codecov.io/gh/weastur/am)
 [![test](https://github.com/weastur/am/actions/workflows/test.yaml/badge.svg)](https://github.com/weastur/am/actions/workflows/test.yaml)
@@ -10,5 +12,7 @@
 ![GitHub commits since latest release](https://img.shields.io/github/commits-since/weastur/am/latest)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/weastur/am)
 ![GitHub License](https://img.shields.io/github/license/weastur/am)
+
+</div>
 
 Asset manager
